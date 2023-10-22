@@ -1,0 +1,31 @@
+const express = require("express");
+const app = express();
+
+const db = require('./models')
+
+const userRoute = require('./routes/user.route')
+
+db.sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Koneksi ke database berhasil.');
+    })
+    .catch(err => {
+        console.log('Gagal koneksi ke database: ', err);
+    })
+
+app.use(express.json())
+
+app.get('/', (req, res) => {
+    return res.status(200).json({
+        message: "selamat datang du aplikasi node.hs + expressjs +sequelize + SQL"
+})
+});
+
+app.use(userRoute);
+
+const port = 8005;
+
+app.listen(port, () =>{
+    console.log(`server starter on port ${port}`)
+})
